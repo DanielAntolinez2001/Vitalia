@@ -41,12 +41,16 @@ const Header = () => {
         </Link>
       </nav>
       <div className="ml-auto flex gap-2">
-        <Button variant="outline" size="sm" className="hidden sm:inline-flex">
-          Iniciar sesión
-        </Button>
-        <Button size="sm" className="hidden sm:inline-flex">
-          Registrarse
-        </Button>
+        <Link href="/login">
+          <Button variant="outline" size="sm" className="hidden sm:inline-flex">
+            Iniciar sesión
+          </Button>
+        </Link>
+        <Link href="/register">
+          <Button size="sm" className="hidden sm:inline-flex">
+            Registrarse
+          </Button>
+        </Link>
         <Button
           variant="ghost"
           size="icon"
