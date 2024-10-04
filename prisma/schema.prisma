@@ -1,0 +1,99 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  email     String     @unique
+  password  String
+  name      String
+  createdAt DateTime   @default(now())
+  birthdate DateTime
+  gender    Boolean
+  height    Float
+  weight    Float
+  foods     Food[]
+  trainings Training[]
+  sleeps    Sleep[]
+  measures  Measure[]
+}
+
+model Food {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  user          User     @relation(fields: [user_id], references: [id])
+  user_id       String   @db.ObjectId
+  name          String
+  calories      Float
+  proteins      Float
+  carbohydrates Float
+  fats          Float
+  date          DateTime
+}
+
+model Training {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  user           User     @relation(fields: [user_id], references: [id])
+  user_id        String   @db.ObjectId
+  type           String
+  duration       Float
+  burnedCalories Float
+  date           DateTime
+}
+
+model Sleep {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  user     User     @relation(fields: [user_id], references: [id])
+  user_id  String   @db.ObjectId
+  duration Float
+  quality  Float
+  date     DateTime
+}
+
+model Measure {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  user    User     @relation(fields: [user_id], references: [id])
+  user_id String   @db.ObjectId
+  date    DateTime
+  height  Float
+  weight  Float
+  age     Float
+}
+
+model Category {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  exercises Exercise[]
+  recipes   Recipe[]
+}
+
+model Exercise {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  category    Category @relation(fields: [category_id], references: [id])
+  category_id String   @db.ObjectId
+  description String
+  video       String
+}
+
+model Recipe {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  description   String
+  calories      Float
+  proteins      Float
+  carbohydrates Float
+  fats          Float
+  category      Category @relation(fields: [category_id], references: [id])
+  category_id   String   @db.ObjectId
+}
